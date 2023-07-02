@@ -6,8 +6,8 @@ from pathlib import Path
 class FileValidator:
     def __init__(self, filename):
         self.filename = filename
-        self._allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
-        self._allowed_types = {'png', 'jpeg', 'gif'}
+        self._allowed_extensions = {"png", "jpg", "jpeg", "gif"}
+        self._allowed_types = {"png", "jpeg", "gif"}
 
     @cache
     def check(self):
