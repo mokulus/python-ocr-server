@@ -20,6 +20,7 @@ UPLOAD_FOLDER = "uploads"
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1000 * 1000
 
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
