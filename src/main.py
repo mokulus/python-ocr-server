@@ -41,16 +41,15 @@ def ocr():
         if not file.filename:
             flash('No selected file')
             return redirect(request.url)
-        if file:
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            if not FileValidator(file_path).check():
-                os.remove(file_path)
-                flash("Only images allowed")
-                return redirect(request.url)
-            text = OcrRunner(file_path).run()
-            return render_template("ocr-post.jinja2", file_path=url_for(app.config['UPLOAD_FOLDER'], filename=filename), text=text)
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        if not FileValidator(file_path).check():
+            os.remove(file_path)
+            flash("Only images allowed")
+            return redirect(request.url)
+        text = OcrRunner(file_path).run()
+        return render_template("ocr-post.jinja2", file_path=url_for(app.config['UPLOAD_FOLDER'], filename=filename), text=text)
     return render_template("ocr-get.jinja2")
 
 
