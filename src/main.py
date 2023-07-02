@@ -1,15 +1,16 @@
 import os.path
 
 from flask import Flask, request, redirect, render_template, after_this_request, url_for, \
-    send_from_directory
+    send_from_directory, flash
 from werkzeug.utils import secure_filename
 
 from ocr import OcrRunner
+from validator import FileValidator
 
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
@@ -33,16 +34,20 @@ def uploads(filename):
 def ocr():
     if request.method == "POST":
         if 'file' not in request.files:
-            print('No file part')
+            flash('No file uploaded')
             return redirect(request.url)
         file = request.files["file"]
         if not file.filename:
-            print('No selected file')
+            flash('No selected file')
             return redirect(request.url)
         if file:
             filename = secure_filename(file.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
+            if not FileValidator(file_path).check():
+                os.remove(file_path)
+                flash("Only images allowed")
+                return redirect(request.url)
             text = OcrRunner(file_path).run()
             return render_template("ocr-post.jinja2", file_path=url_for(app.config['UPLOAD_FOLDER'], filename=filename), text=text)
     return render_template("ocr-get.jinja2")

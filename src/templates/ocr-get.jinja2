@@ -6,6 +6,7 @@
     <div class="container">
         <div class="position-absolute top-50 start-50 translate-middle">
             <h1>Upload new file</h1>
+            {% include "flashes.jinja2" %}
             <form method=post enctype=multipart/form-data>
                 <div class="d-grid gap-2">
                     <input type="file" class="form-control-file" name="file"/>
