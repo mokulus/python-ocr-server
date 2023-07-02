@@ -63,4 +63,5 @@ def ocr():
     return render_template("ocr-get.jinja2")
 
 
-app.run(port=5000)
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
