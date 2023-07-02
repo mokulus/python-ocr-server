@@ -23,11 +23,12 @@ def home():
 
 @app.route('/uploads/<filename>')
 def uploads(filename):
+    directory = app.config['UPLOAD_FOLDER']
     @after_this_request
     def cleanup(response):
-        os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        os.remove(os.path.join(directory, filename))
         return response
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    return send_from_directory(directory, filename)
 
 
 @app.route("/ocr", methods=["GET", "POST"])
