@@ -25,11 +25,6 @@ app.config['MAX_CONTENT_LENGTH'] = 8 * 1000 * 1000
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 
-@app.route("/")
-def home():
-    return "Hello, world!"
-
-
 @app.route("/uploads/<filename>")
 def uploads(filename):
     directory = app.config["UPLOAD_FOLDER"]
@@ -42,7 +37,7 @@ def uploads(filename):
     return send_from_directory(directory, filename)
 
 
-@app.route("/ocr", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def ocr():
     if request.method == "POST":
         if "file" not in request.files:
